@@ -8,6 +8,7 @@ export interface Message {
   role: Role;
   text: string;
   timestamp: Date;
+  isLive?: boolean;
 }
 
 export type AIStyle = 'classic' | 'street' | 'executive' | 'counselor';

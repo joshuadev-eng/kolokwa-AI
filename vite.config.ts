@@ -4,16 +4,17 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  define: {
-    // This allows Vercel/Netlify environment variables to be injected into the client bundle
-    'process.env.API_KEY': JSON.stringify(process.env.API_KEY || ''),
-  },
   server: {
     port: 3000,
+    proxy: {
+      '/.netlify/functions': {
+        target: 'http://localhost:8888',
+        changeOrigin: true,
+      }
+    }
   },
   build: {
     outDir: 'dist',
-    sourcemap: false,
     rollupOptions: {
       input: './index.html',
     },

@@ -20,6 +20,12 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ message }) => {
             ? 'bg-blue-600 text-white rounded-br-none' 
             : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none'
         }`}>
+          {message.isLive && (
+            <div className={`text-[9px] font-bold uppercase tracking-widest mb-1 flex items-center space-x-1 ${isUser ? 'text-blue-200' : 'text-red-500'}`}>
+              <div className={`w-1 h-1 rounded-full animate-pulse ${isUser ? 'bg-blue-100' : 'bg-red-500'}`}></div>
+              <span>Live Transcript</span>
+            </div>
+          )}
           <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
           <p className={`text-[10px] mt-1 ${isUser ? 'text-blue-100' : 'text-gray-400'}`}>
             {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

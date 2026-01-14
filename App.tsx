@@ -5,10 +5,30 @@ import { getGeminiResponse } from './geminiService';
 import ChatBubble from './components/ChatBubble';
 
 const STYLE_OPTIONS: StyleOption[] = [
-  { id: 'classic', label: 'Classic', icon: 'fa-robot', description: 'Balanced Kolokwa' },
-  { id: 'street', label: 'Street', icon: 'fa-glasses', description: 'Deep Street Slang' },
-  { id: 'executive', label: 'Executive', icon: 'fa-user-tie', description: 'Professional Tone' },
-  { id: 'counselor', label: 'Counselor', icon: 'fa-hands-praying', description: 'Empathetic & Wise' },
+  { 
+    id: 'classic', 
+    label: 'Classic', 
+    icon: 'fa-robot', 
+    description: 'A smooth blend of everyday English and sweet Kolokwa. Home vibes.' 
+  },
+  { 
+    id: 'street', 
+    label: 'Street', 
+    icon: 'fa-glasses', 
+    description: 'Straight from the block. Heavy slang, deep proverbs, and raw street sage logic.' 
+  },
+  { 
+    id: 'executive', 
+    label: 'Executive', 
+    icon: 'fa-user-tie', 
+    description: 'Polished, professional, and sharp. The business-class Liberian experience.' 
+  },
+  { 
+    id: 'counselor', 
+    label: 'Counselor', 
+    icon: 'fa-hands-praying', 
+    description: 'Wise, spiritual, and deeply supportive. Guidance for the soul, elder-style.' 
+  },
 ];
 
 const App: React.FC = () => {

@@ -10,4 +10,11 @@ export interface Message {
   timestamp: Date;
 }
 
-export type ConversationStyle = 'casual' | 'formal' | 'church' | 'general';
+export type AIStyle = 'classic' | 'street' | 'executive' | 'counselor';
+
+export interface StyleOption {
+  id: AIStyle;
+  label: string;
+  icon: string;
+  description: string;
+}

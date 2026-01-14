@@ -1,11 +1,32 @@
 
 import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
-import { Role, Message } from './types';
+import { Role, Message, AIStyle } from './types';
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
 
-const SYSTEM_INSTRUCTION = `
+const getBaseInstruction = (style: AIStyle) => {
+  let styleModifier = "";
+  
+  switch (style) {
+    case 'street':
+      styleModifier = "Your style is 'The Street Sage'. Use heavy Kolokwa street slang, deep Liberian proverbs, and a very informal, 'my man' attitude. Be the cool guy from the block.";
+      break;
+    case 'executive':
+      styleModifier = "Your style is 'The Executive'. Use professional, clear Standard English but maintain a warm Liberian professional flair. You are efficient, helpful, and very polite.";
+      break;
+    case 'counselor':
+      styleModifier = "Your style is 'The Counselor'. Use a supportive, empathetic, and slightly church-leaning tone. Use phrases like 'Blessings,' 'My child,' or 'God is in control' where appropriate. Be the wise elder.";
+      break;
+    case 'classic':
+    default:
+      styleModifier = "Your style is 'Classic Kolokwa'. A balanced, friendly mix of regular English and Liberian English. Natural and human-like.";
+      break;
+  }
+
+  return `
 You are a friendly, human-like Liberian English (Kolokwa) AI chatbot. Your developer is Joshua Randolph.
+
+CURRENT STYLE CONFIGURATION: ${styleModifier}
 
 GREETING RULES:
 - On first interaction or greeting, if no specific style is detected, say: "Hello! I’m your AI assistant, built by Joshua Randolph."
@@ -18,31 +39,25 @@ CREATOR IDENTITY:
 
 TONE AND STYLE:
 - Keep all responses polite, natural, confident, and human-like.
-- Use Liberian English (Kolokwa) tone when appropriate for the context.
+- Use Liberian English (Kolokwa) tone when appropriate for the context and your current style modifier.
 - You are knowledgeable about Liberia but also general global topics.
 - When talking in Kolokwa, use phrases like "small-small," "how the body?", "da my own," etc., when the context allows.
 - Always be helpful and respectful.
 `;
+};
 
-export const getGeminiResponse = async (history: Message[], prompt: string): Promise<string> => {
+export const getGeminiResponse = async (history: Message[], prompt: string, style: AIStyle = 'classic'): Promise<string> => {
   try {
-    const formattedHistory = history.map(msg => ({
-      role: msg.role === Role.USER ? 'user' : 'model',
-      parts: [{ text: msg.text }]
-    }));
-
     const chat = ai.chats.create({
       model: 'gemini-3-flash-preview',
       config: {
-        systemInstruction: SYSTEM_INSTRUCTION,
+        systemInstruction: getBaseInstruction(style),
         temperature: 0.8,
         topP: 0.95,
         topK: 64,
       }
     });
 
-    // In this specific SDK version, sendMessage handles the conversation context if we use the chat object
-    // For a cleaner flow, we'll just send the current message and the model handles the rest via history
     const response: GenerateContentResponse = await chat.sendMessage({
         message: prompt
     });
